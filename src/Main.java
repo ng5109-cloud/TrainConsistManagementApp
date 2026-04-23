@@ -1,18 +1,14 @@
 import java.util.*;
 import java.util.stream.*;
 
-// ================= GOODS BOGIE CLASS =================
-class GoodsBogie {
-    String type;   // Rectangular / Cylindrical
-    String cargo;  // Coal / Petroleum / etc.
+// ================= BOGIE CLASS =================
+class Bogie {
+    String name;
+    int capacity;
 
-    public GoodsBogie(String type, String cargo) {
-        this.type = type;
-        this.cargo = cargo;
-    }
-
-    public String toString() {
-        return type + " (" + cargo + ")";
+    public Bogie(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
     }
 }
 
@@ -21,32 +17,43 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("=== Train Safety Validation System ===");
+        System.out.println("=== Performance Comparison: Loop vs Stream ===");
 
-        // Create goods bogies
-        List<GoodsBogie> bogies = new ArrayList<>();
-        bogies.add(new GoodsBogie("Rectangular", "Coal"));
-        bogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
-        bogies.add(new GoodsBogie("Rectangular", "Grain"));
+        // Create test data
+        List<Bogie> bogies = new ArrayList<>();
 
-        System.out.println("\nGoods Bogies:");
-        System.out.println(bogies);
-
-        // Validation using allMatch()
-        boolean isSafe = bogies.stream()
-                .allMatch(b -> {
-                    // Rule: Cylindrical → only Petroleum
-                    if (b.type.equals("Cylindrical")) {
-                        return b.cargo.equals("Petroleum");
-                    }
-                    return true; // other types are allowed
-                });
-
-        // Display result
-        if (isSafe) {
-            System.out.println("\nTrain is SAFETY COMPLIANT ✅");
-        } else {
-            System.out.println("\nTrain is NOT SAFE ❌");
+        for (int i = 0; i < 100000; i++) {
+            bogies.add(new Bogie("Bogie" + i, i % 100));
         }
+
+        // -------- LOOP-BASED FILTER --------
+        long startLoop = System.nanoTime();
+
+        List<Bogie> loopResult = new ArrayList<>();
+        for (Bogie b : bogies) {
+            if (b.capacity > 50) {
+                loopResult.add(b);
+            }
+        }
+
+        long endLoop = System.nanoTime();
+        long loopTime = endLoop - startLoop;
+
+        // -------- STREAM-BASED FILTER --------
+        long startStream = System.nanoTime();
+
+        List<Bogie> streamResult = bogies.stream()
+                .filter(b -> b.capacity > 50)
+                .collect(Collectors.toList());
+
+        long endStream = System.nanoTime();
+        long streamTime = endStream - startStream;
+
+        // -------- OUTPUT --------
+        System.out.println("\nLoop Filter Count: " + loopResult.size());
+        System.out.println("Stream Filter Count: " + streamResult.size());
+
+        System.out.println("\nLoop Time (nanoseconds): " + loopTime);
+        System.out.println("Stream Time (nanoseconds): " + streamTime);
     }
 }
