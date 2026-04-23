@@ -1,49 +1,23 @@
+import java.util.Arrays;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("=== Bubble Sort: Passenger Bogie Capacities ===");
+        System.out.println("=== Sorting Bogie Types (Arrays.sort) ===");
 
-        // Step 1: Input array
-        int[] capacities = {72, 60, 40, 80, 50};
+        // Step 1: Create array of bogie names
+        String[] bogieTypes = {"Sleeper", "AC Chair", "First Class", "Cargo", "Engine"};
 
-        System.out.print("\nBefore Sorting: ");
-        printArray(capacities);
+        // Before sorting
+        System.out.println("\nBefore Sorting:");
+        System.out.println(Arrays.toString(bogieTypes));
 
-        // Step 2: Bubble Sort Logic
-        int n = capacities.length;
+        // Step 2: Sort using built-in method
+        Arrays.sort(bogieTypes);
 
-        for (int i = 0; i < n - 1; i++) {
-
-            // Optimization: check if any swap happens
-            boolean swapped = false;
-
-            for (int j = 0; j < n - i - 1; j++) {
-
-                if (capacities[j] > capacities[j + 1]) {
-
-                    // Swap
-                    int temp = capacities[j];
-                    capacities[j] = capacities[j + 1];
-                    capacities[j + 1] = temp;
-
-                    swapped = true;
-                }
-            }
-
-            // If no swaps → already sorted
-            if (!swapped) break;
-        }
-
-        System.out.print("\nAfter Sorting: ");
-        printArray(capacities);
-    }
-
-    // Helper method
-    static void printArray(int[] arr) {
-        for (int num : arr) {
-            System.out.print(num + " ");
-        }
-        System.out.println();
+        // After sorting
+        System.out.println("\nAfter Sorting:");
+        System.out.println(Arrays.toString(bogieTypes));
     }
 }
