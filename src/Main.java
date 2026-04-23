@@ -1,69 +1,49 @@
-import java.util.*;
-
-// ================= CUSTOM RUNTIME EXCEPTION =================
-class CargoSafetyException extends RuntimeException {
-    public CargoSafetyException(String message) {
-        super(message);
-    }
-}
-
-// ================= GOODS BOGIE CLASS =================
-class GoodsBogie {
-    String type;   // Rectangular / Cylindrical
-    String cargo;
-
-    public GoodsBogie(String type) {
-        this.type = type;
-    }
-
-    // Method to assign cargo safely
-    public void assignCargo(String cargo) {
-
-        try {
-            // Rule: Rectangular cannot carry Petroleum
-            if (type.equals("Rectangular") && cargo.equals("Petroleum")) {
-                throw new CargoSafetyException("Unsafe: Rectangular bogie cannot carry Petroleum");
-            }
-
-            this.cargo = cargo;
-            System.out.println("Cargo assigned successfully: " + type + " -> " + cargo);
-
-        } catch (CargoSafetyException e) {
-            System.out.println("Error: " + e.getMessage());
-
-        } finally {
-            System.out.println("Cargo assignment attempt completed.\n");
-        }
-    }
-
-    public String toString() {
-        return type + " (" + (cargo != null ? cargo : "No Cargo") + ")";
-    }
-}
-
-// ================= MAIN CLASS =================
 public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("=== Cargo Safety Management System ===");
+        System.out.println("=== Bubble Sort: Passenger Bogie Capacities ===");
 
-        // Create bogies
-        GoodsBogie b1 = new GoodsBogie("Rectangular");
-        GoodsBogie b2 = new GoodsBogie("Cylindrical");
+        // Step 1: Input array
+        int[] capacities = {72, 60, 40, 80, 50};
 
-        // Safe assignment
-        b1.assignCargo("Coal");
+        System.out.print("\nBefore Sorting: ");
+        printArray(capacities);
 
-        // Unsafe assignment (will trigger exception)
-        b1.assignCargo("Petroleum");
+        // Step 2: Bubble Sort Logic
+        int n = capacities.length;
 
-        // Safe assignment
-        b2.assignCargo("Petroleum");
+        for (int i = 0; i < n - 1; i++) {
 
-        // Final state
-        System.out.println("Final Bogie States:");
-        System.out.println(b1);
-        System.out.println(b2);
+            // Optimization: check if any swap happens
+            boolean swapped = false;
+
+            for (int j = 0; j < n - i - 1; j++) {
+
+                if (capacities[j] > capacities[j + 1]) {
+
+                    // Swap
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+
+                    swapped = true;
+                }
+            }
+
+            // If no swaps → already sorted
+            if (!swapped) break;
+        }
+
+        System.out.print("\nAfter Sorting: ");
+        printArray(capacities);
+    }
+
+    // Helper method
+    static void printArray(int[] arr) {
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
     }
 }
