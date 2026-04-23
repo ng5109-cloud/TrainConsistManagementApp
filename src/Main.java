@@ -1,25 +1,36 @@
+import java.util.Arrays;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("=== Linear Search: Bogie ID ===");
+        System.out.println("=== Binary Search: Bogie ID ===");
 
-        // Step 1: Create array of bogie IDs (unsorted)
-        String[] bogieIds = {"BG101", "BG205", "BG150", "BG300", "BG250"};
+        // Step 1: Sorted array (IMPORTANT)
+        String[] bogieIds = {"BG101", "BG150", "BG205", "BG250", "BG300"};
 
         // Step 2: Search key
-        String searchKey = "BG150";   // change this to test
+        String key = "BG205";   // change to test
 
-        // Step 3: Linear Search
+        // Step 3: Binary Search
+        int low = 0;
+        int high = bogieIds.length - 1;
         boolean found = false;
 
-        for (int i = 0; i < bogieIds.length; i++) {
+        while (low <= high) {
 
-            // Compare using equals()
-            if (bogieIds[i].equals(searchKey)) {
-                System.out.println("\nBogie Found at position: " + i);
+            int mid = (low + high) / 2;
+
+            int result = key.compareTo(bogieIds[mid]);
+
+            if (result == 0) {
+                System.out.println("\nBogie Found at position: " + mid);
                 found = true;
-                break; // Early termination
+                break;
+            } else if (result < 0) {
+                high = mid - 1;   // search left
+            } else {
+                low = mid + 1;    // search right
             }
         }
 
