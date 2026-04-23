@@ -23,22 +23,22 @@ public class Main {
 
         System.out.println("=== Train Consist Management App ===");
 
-        // Reuse Bogie list (like UC7)
+        // Create list of bogies
         List<Bogie> bogies = new ArrayList<>();
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 60));
         bogies.add(new Bogie("First Class", 40));
 
-        System.out.println("\nAll Bogies:");
+        System.out.println("\nBogies:");
         System.out.println(bogies);
 
-        // Convert to stream → filter → collect
-        List<Bogie> filteredBogies = bogies.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
+        // Stream → map → reduce
+        int totalCapacity = bogies.stream()
+                .map(b -> b.capacity)           // extract capacities
+                .reduce(0, Integer::sum);       // sum all values
 
-        // Display filtered result
-        System.out.println("\nFiltered Bogies (capacity > 60):");
-        System.out.println(filteredBogies);
+        // Display result
+        System.out.println("\nTotal Seating Capacity:");
+        System.out.println(totalCapacity);
     }
 }
